@@ -1,21 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzapora <mzapora@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/21 11:47:22 by mzapora           #+#    #+#             */
+/*   Updated: 2025/01/21 11:51:28 by mzapora          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
 
-char	*ft_joinfree(char *buf , char *tmp)
+char	*ft_joinfree(char *buf, char *tmp)
 {
 	char	*tmp2;
 
 	tmp2 = buf;
 	buf = ft_strjoin(buf, tmp);
 	free(tmp2);
-	tmp2 = NULL;	
+	tmp2 = NULL;
 	return (buf);
 }
 
 char	*ft_polishbuf(char *buf)
 {
 	char	*editedbuf;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -40,7 +52,7 @@ char	*ft_polishbuf(char *buf)
 
 char	*polishline(char *buf)
 {
-	int	i;
+	int		i;
 	char	*output;
 
 	i = 0;
@@ -64,9 +76,9 @@ char	*polishline(char *buf)
 
 char	*line_read(int fd, char *buf)
 {
-	int	bytes_read;
+	int		bytes_read;
 	char	*tmp;
-	
+
 	tmp = malloc(BUFFER_SIZE + 1);
 	if (!tmp)
 		return (NULL);
@@ -81,8 +93,8 @@ char	*line_read(int fd, char *buf)
 			return (NULL);
 		}
 		tmp[bytes_read] = 0;
-		buf = ft_joinfree(buf , tmp);
-		if (ft_strchr(buf , '\n'))
+		buf = ft_joinfree(buf, tmp);
+		if (ft_strchr(buf, '\n'))
 			break ;
 	}
 	free(tmp);
@@ -92,17 +104,17 @@ char	*line_read(int fd, char *buf)
 char	*get_next_line(int fd)
 {
 	static char		*buf[OPENFD];
-	char	*line;
+	char			*line;
 
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
 	if (!buf[fd])
-		buf[fd] = ft_calloc(1 , 1);
-	buf[fd] = line_read(fd , buf[fd]);
+		buf[fd] = ft_calloc(1, 1);
+	buf[fd] = line_read(fd, buf[fd]);
 	if (!buf[fd])
 		return (NULL);
 	line = polishline(buf[fd]);
-	buf[fd] = ft_polishbuf(buf[fd]);	
+	buf[fd] = ft_polishbuf(buf[fd]);
 	return (line);
 }
 /*
